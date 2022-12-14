@@ -5,6 +5,9 @@ description = "Model Server implementation for AI eXplainability with LIME. Not 
 authors = ["Andrew Butler <Andrew.Butler@ibm.com>"]
 license = "https://github.com/kserve/kserve/blob/master/LICENSE"
 readme = "README.md"
+packages = [
+    { include = "aixserver" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"

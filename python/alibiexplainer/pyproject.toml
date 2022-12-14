@@ -5,6 +5,9 @@ description = "Model Explanation Server. Not intended for use outside KServe Fra
 authors = ["kserve authors <cc@seldon.io>"]
 license = "https://github.com/kserve/kserve/blob/master/LICENSE"
 readme = "README.md"
+packages = [
+    { include = "alibiexplainer" },
+]
 
 [tool.poetry.dependencies]
 python = ">=3.7, <3.11"
