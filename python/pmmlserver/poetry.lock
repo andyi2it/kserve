@@ -1272,13 +1272,13 @@ files = [
 
 [[package]]
 name = "jpmml-evaluator"
-version = "0.5.1"
+version = "0.5.3"
 description = "PMML evaluator library for Python"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "jpmml_evaluator-0.5.1.tar.gz", hash = "sha256:fc2e4eff07d2379608d6918778c1f430f4d01694f20a59861b4b027d6dfeabeb"},
+    {file = "jpmml_evaluator-0.5.3.tar.gz", hash = "sha256:4c050363414a7a868251ea66b4bc9b31ac842e3f758aea8f04756632b0ab4889"},
 ]
 
 [package.dependencies]
@@ -1323,9 +1323,9 @@ develop = true
 
 [package.dependencies]
 azure-identity = "^1.8.0"
-azure-storage-blob = "12.9.0"
-azure-storage-file-share = "12.7.0"
-boto3 = "1.21.0"
+azure-storage-blob = "~12.9.0"
+azure-storage-file-share = "~12.7.0"
+boto3 = "~1.21.0"
 cloudevents = "^1.6.2"
 fastapi = "^0.85.0"
 google-cloud-storage = "^1.20.0"
@@ -1338,7 +1338,7 @@ prometheus-client = "^0.13.1"
 protobuf = "~3.19.0"
 psutil = "^5.9.0"
 python-dateutil = "^2.8.0"
-ray = {version = "2.0.0", extras = ["serve"]}
+ray = {version = "~2.0.0", extras = ["serve"]}
 six = "^1.16.0"
 table-logger = "^0.3.6"
 urllib3 = "^1.26.8"
@@ -2881,4 +2881,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.7"
-content-hash = "314e1a7d776ea46bb7de89b73ba9f8c4d2a3019b42ecab75280eb4bef6c4e4a9"
+content-hash = "e55519566fadf8ae306d945ce8e9d49f3c166b472056f8bfc8f67e05e1c09c90"
