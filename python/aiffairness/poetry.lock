@@ -1232,7 +1232,7 @@ version = "0.10.0rc0"
 description = "KServe Python SDK"
 category = "main"
 optional = false
-python-versions = "^3.7"
+python-versions = ">=3.7,<3.11"
 files = []
 develop = true
 
@@ -1247,7 +1247,7 @@ google-cloud-storage = "^1.20.0"
 grpcio = "^1.34.0"
 httpx = "^0.23.0"
 kubernetes = "^18.20.0"
-numpy = "^1.21.1"
+numpy = ">=1.21.5,<1.24.0"
 orjson = "^3.8.0"
 prometheus-client = "^0.13.1"
 protobuf = "~3.19.0"
@@ -1774,7 +1774,6 @@ files = [
 numpy = [
     {version = ">=1.20.3", markers = "python_version < \"3.10\""},
     {version = ">=1.21.0", markers = "python_version >= \"3.10\""},
-    {version = ">=1.23.2", markers = "python_version >= \"3.11\""},
 ]
 python-dateutil = ">=2.8.1"
 pytz = ">=2020.1"
@@ -2783,5 +2782,5 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.8"
-content-hash = "abd4916feac47f2a3c206c5cbfc972bb7dad0dfaaaf0dade4b0923438df67350"
+python-versions = ">=3.8,<3.11"
+content-hash = "a45f71ac98ed96cceb8f3a16d4022870106d6a99688b29545ddb8cd8c3324b8d"

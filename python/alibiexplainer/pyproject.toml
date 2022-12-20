@@ -10,7 +10,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = ">=3.7, <3.11"
+python = ">=3.7,<3.11"
 kserve = {path = "../kserve", develop = true}
 tensorflow = "^2.5.0"  # see https://github.com/python-poetry/poetry/issues/4605
 alibi = {version = "^0.6.4", extras = ["shap"]}

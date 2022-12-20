@@ -9,7 +9,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = ">=3.9,<3.11"
 kserve = {path = "../kserve", develop = true}
 torchvision = {version = "0.14.0+cpu", source = "pytorch"}
 torch = {version = "1.13.0+cpu", source = "pytorch"}

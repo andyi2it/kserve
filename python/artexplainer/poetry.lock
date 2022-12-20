@@ -1277,7 +1277,7 @@ version = "0.10.0rc0"
 description = "KServe Python SDK"
 category = "main"
 optional = false
-python-versions = "^3.7"
+python-versions = ">=3.7,<3.11"
 files = []
 develop = true
 
@@ -1292,7 +1292,7 @@ google-cloud-storage = "^1.20.0"
 grpcio = "^1.34.0"
 httpx = "^0.23.0"
 kubernetes = "^18.20.0"
-numpy = "^1.21.1"
+numpy = ">=1.21.5,<1.24.0"
 orjson = "^3.8.0"
 prometheus-client = "^0.13.1"
 protobuf = "~3.19.0"
@@ -2768,5 +2768,5 @@ multidict = ">=4.0"
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.9"
-content-hash = "599878816e9cbae59d4c5e2469b945eb2c5deccb37ab0ad9f884ab3f07685340"
+python-versions = ">=3.9,<3.11"
+content-hash = "e62d5bef29bd94ed81f451efe2a89993dfbb0c129f336d822aeebfc4420a1d98"
