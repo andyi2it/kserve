@@ -38,10 +38,10 @@ echo "Add storageSpec testing secrets ..."
 kubectl apply -f config/overlays/test/minio/minio-user-secret.yaml -n kserve-ci-e2e-test
 
 echo "Installing Poetry"
-POETRY_VERSION=1.3.1
-POETRY_HOME=/opt/poetry
+export POETRY_VERSION=1.3.1
+export POETRY_HOME=/opt/poetry
 python3 -m venv $POETRY_HOME && $POETRY_HOME/bin/pip install poetry==$POETRY_VERSION
-ENV PATH="$PATH:$POETRY_HOME/bin"
+export PATH="$PATH:$POETRY_HOME/bin"
 
 echo "Installing KServe Python SDK ..."
 pushd python/kserve >/dev/null
