@@ -71,7 +71,9 @@ for i in 1 2 3 ; do kubectl apply -k test/overlays/knative && break || sleep 15;
 echo "Waiting for Knative to be ready ..."
 kubectl wait --for=condition=Ready pods --all --timeout=300s -n knative-serving -l 'app in (webhook, activator,autoscaler,autoscaler-hpa,controller,net-istio-controller,net-istio-webhook)'
 
-echo "Add knative hpa..."
+# Sleeping 4 seconds since sometimes config-deployment patch fails
+sleep 4
+# echo "Add knative hpa..."
 # kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.0.0/serving-hpa.yaml
 
 # Skip tag resolution for certain domains
