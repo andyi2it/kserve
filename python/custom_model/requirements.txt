@@ -1,2 +1,2 @@
 kserve
-torchvision
+torchvision==0.14.1
