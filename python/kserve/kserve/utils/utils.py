@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import logging
 import os
 import sys
 import uuid
@@ -182,42 +183,44 @@ def get_predict_input(payload: Union[Dict, InferRequest]) -> Union[np.ndarray, p
                 content_type = parameters.get("content_type")
 
         if content_type == "pd":
-            return payload.as_dataframe()
+            return [payload.as_dataframe()]
         else:
-            input = payload.inputs[0]
-            return input.as_numpy()
+            infer_inputs = [input.as_numpy() for input in payload.inputs]
+            return infer_inputs
 
 
-def get_predict_response(payload: Union[Dict, InferRequest], result: Union[np.ndarray, pd.DataFrame],
+def get_predict_response(payload: Union[Dict, InferRequest], results: List[Union[np.ndarray, pd.DataFrame]],
                          model_name: str) -> Union[Dict, InferResponse]:
     if isinstance(payload, Dict):
-        infer_outputs = result
-        if isinstance(result, pd.DataFrame):
+        infer_outputs = results
+        if isinstance(results, pd.DataFrame):
             infer_outputs = []
-            for label, row in result.iterrows():
+            for label, row in results.iterrows():
                 infer_outputs.append(row.to_dict())
-        elif isinstance(result, np.ndarray):
-            infer_outputs = result.tolist()
+        elif isinstance(results, np.ndarray):
+            infer_outputs = results.tolist()
         return {"predictions": infer_outputs}
     elif isinstance(payload, InferRequest):
         infer_outputs = []
-        if isinstance(result, pd.DataFrame):
-            for col in result.columns:
+
+        for result in results:
+            if isinstance(result, pd.DataFrame):
+                for col in result.columns:
+                    infer_output = InferOutput(
+                        name=col,
+                        shape=list(result[col].shape),
+                        datatype=from_np_dtype(result[col].dtype),
+                        data=result[col].tolist()
+                    )
+                    infer_outputs.append(infer_output)
+            else:
                 infer_output = InferOutput(
-                    name=col,
-                    shape=list(result[col].shape),
-                    datatype=from_np_dtype(result[col].dtype),
-                    data=result[col].tolist()
+                    name="output-0",
+                    shape=list(result.shape),
+                    datatype=from_np_dtype(result.dtype),
+                    data=result.flatten().tolist()
                 )
                 infer_outputs.append(infer_output)
-        else:
-            infer_output = InferOutput(
-                name="output-0",
-                shape=list(result.shape),
-                datatype=from_np_dtype(result.dtype),
-                data=result.flatten().tolist()
-            )
-            infer_outputs.append(infer_output)
         return InferResponse(
             model_name=model_name,
             infer_outputs=infer_outputs,
