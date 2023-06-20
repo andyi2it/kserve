@@ -9,6 +9,8 @@ on:
       - '!docs/**'
       - '!**.md'
       - '.github/workflows/e2e-test.yml'
+  workflow_dispatch:
+    
 
 env:
    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
