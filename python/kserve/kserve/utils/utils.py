@@ -110,8 +110,10 @@ def create_response_cloudevent(model_name: str, response: Dict, req_attributes: 
         del ce_attributes["id"]
         del ce_attributes["time"]
 
-    ce_attributes["type"] = os.getenv("CE_TYPE", "io.kserve.inference.response")
-    ce_attributes["source"] = os.getenv("CE_SOURCE", f"io.kserve.inference.{model_name}")
+    ce_attributes["type"] = os.getenv(
+        "CE_TYPE", "io.kserve.inference.response")
+    ce_attributes["source"] = os.getenv(
+        "CE_SOURCE", f"io.kserve.inference.{model_name}")
 
     event = CloudEvent(ce_attributes, response)
 
@@ -142,7 +144,7 @@ def get_predict_input(payload: Union[Dict, InferRequest]) -> Union[np.ndarray, p
     if isinstance(payload, Dict):
         instances = payload["inputs"] if "inputs" in payload else payload["instances"]
         if len(instances) == 0:
-            return np.array(instances)
+            return [np.array(instances)]
         if isinstance(instances[0], Dict):
             dfs = []
             for input in instances:
@@ -167,8 +169,9 @@ def get_predict_input(payload: Union[Dict, InferRequest]) -> Union[np.ndarray, p
                         else:
                             data[key] = [val]
             return pd.DataFrame(data)
+            return [inputs]
         else:
-            return np.array(instances)
+            return [np.array(instances)]
 
     elif isinstance(payload, InferRequest):
         content_type = ''
@@ -191,6 +194,9 @@ def get_predict_input(payload: Union[Dict, InferRequest]) -> Union[np.ndarray, p
 def get_predict_response(payload: Union[Dict, InferRequest], results: List[Union[np.ndarray, pd.DataFrame]],
                          model_name: str) -> Union[Dict, InferResponse]:
     if isinstance(payload, Dict):
+        # Taking the 0th element is sufficient as we have included the prediction results inside a list
+        # to ensure generic code compatibility in the model's predict method for both v1 and v2 formats
+        results = results[0]
         infer_outputs = results
         if isinstance(results, pd.DataFrame):
             infer_outputs = []
