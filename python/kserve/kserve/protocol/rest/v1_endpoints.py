@@ -78,7 +78,7 @@ class V1Endpoints:
                                                                 headers=headers)
         response, response_headers = self.dataplane.encode(model_name=model_name,
                                                            response=response,
-                                                           headers=headers, req_attributes=req_attributes)
+                                                           headers=response_headers, req_attributes=req_attributes)
 
         if not isinstance(response, dict):
             return Response(content=response, headers=response_headers)
@@ -108,7 +108,7 @@ class V1Endpoints:
                                                                   headers=headers)
         response, response_headers = self.dataplane.encode(model_name=model_name,
                                                            response=response,
-                                                           headers=headers, req_attributes=req_attributes)
+                                                           headers=response_headers, req_attributes=req_attributes)
 
         if not isinstance(response, dict):
             return Response(content=response, headers=response_headers)
