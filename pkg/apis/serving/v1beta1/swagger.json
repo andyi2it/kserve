@@ -66,7 +66,7 @@
       }
     },
     "v1alpha1.ClusterServingRuntimeList": {
-      "description": "ServingRuntimeList contains a list of ServingRuntime",
+      "description": "ClusterServingRuntimeList contains a list of ServingRuntime",
       "type": "object",
       "required": [
         "items"
@@ -81,6 +81,57 @@
           "items": {
             "default": {},
             "$ref": "#/definitions/v1alpha1.ClusterServingRuntime"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/v1.ListMeta"
+        }
+      }
+    },
+    "v1alpha1.ClusterStorageContainer": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/v1alpha1.StorageContainerSpec"
+        }
+      }
+    },
+    "v1alpha1.ClusterStorageContainerList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/v1alpha1.ClusterStorageContainer"
           }
         },
         "kind": {
@@ -237,6 +288,10 @@
         },
         "data": {
           "description": "request data sent to the next route with input/output from the previous step $request $response.predictions",
+          "type": "string"
+        },
+        "dependency": {
+          "description": "to decide whether a step is a hard or a soft dependency in the Inference Graph",
           "type": "string"
         },
         "name": {
@@ -562,6 +617,29 @@
       "description": "ServingRuntimeStatus defines the observed state of ServingRuntime",
       "type": "object"
     },
+    "v1alpha1.StorageContainerSpec": {
+      "description": "StorageContainerSpec defines the container spec for the storage initializer init container, and the protocols it supports.",
+      "type": "object",
+      "required": [
+        "container",
+        "supportedUriFormats"
+      ],
+      "properties": {
+        "container": {
+          "description": "Container spec for the storage initializer init container",
+          "default": {},
+          "$ref": "#/definitions/v1.Container"
+        },
+        "supportedUriFormats": {
+          "description": "List of URI formats that this container supports",
+          "type": "array",
+          "items": {
+            "default": {},
+            "$ref": "#/definitions/v1alpha1.SupportedUriFormat"
+          }
+        }
+      }
+    },
     "v1alpha1.StorageHelper": {
       "type": "object",
       "properties": {
@@ -589,6 +667,18 @@
         },
         "version": {
           "description": "Version of the model format. Used in validating that a predictor is supported by a runtime. Can be \"major\", \"major.minor\" or \"major.minor.patch\".",
+          "type": "string"
+        }
+      }
+    },
+    "v1alpha1.SupportedUriFormat": {
+      "description": "SupportedUriFormat can be either prefix or regex. Todo: Add validation that only one of them is set.",
+      "type": "object",
+      "properties": {
+        "prefix": {
+          "type": "string"
+        },
+        "regex": {
           "type": "string"
         }
       }

@@ -36,9 +36,9 @@ type FakeTrainedModels struct {
 	ns   string
 }
 
-var trainedmodelsResource = schema.GroupVersionResource{Group: "serving", Version: "v1alpha1", Resource: "trainedmodels"}
+var trainedmodelsResource = schema.GroupVersionResource{Group: "serving.kserve.io", Version: "v1alpha1", Resource: "trainedmodels"}
 
-var trainedmodelsKind = schema.GroupVersionKind{Group: "serving", Version: "v1alpha1", Kind: "TrainedModel"}
+var trainedmodelsKind = schema.GroupVersionKind{Group: "serving.kserve.io", Version: "v1alpha1", Kind: "TrainedModel"}
 
 // Get takes name of the trainedModel, and returns the corresponding trainedModel object, and an error if there is any.
 func (c *FakeTrainedModels) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.TrainedModel, err error) {

@@ -36,9 +36,9 @@ type FakeServingRuntimes struct {
 	ns   string
 }
 
-var servingruntimesResource = schema.GroupVersionResource{Group: "serving", Version: "v1alpha1", Resource: "servingruntimes"}
+var servingruntimesResource = schema.GroupVersionResource{Group: "serving.kserve.io", Version: "v1alpha1", Resource: "servingruntimes"}
 
-var servingruntimesKind = schema.GroupVersionKind{Group: "serving", Version: "v1alpha1", Kind: "ServingRuntime"}
+var servingruntimesKind = schema.GroupVersionKind{Group: "serving.kserve.io", Version: "v1alpha1", Kind: "ServingRuntime"}
 
 // Get takes name of the servingRuntime, and returns the corresponding servingRuntime object, and an error if there is any.
 func (c *FakeServingRuntimes) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.ServingRuntime, err error) {

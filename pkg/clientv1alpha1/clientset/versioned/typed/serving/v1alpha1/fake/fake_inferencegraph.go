@@ -36,9 +36,9 @@ type FakeInferenceGraphs struct {
 	ns   string
 }
 
-var inferencegraphsResource = schema.GroupVersionResource{Group: "serving", Version: "v1alpha1", Resource: "inferencegraphs"}
+var inferencegraphsResource = schema.GroupVersionResource{Group: "serving.kserve.io", Version: "v1alpha1", Resource: "inferencegraphs"}
 
-var inferencegraphsKind = schema.GroupVersionKind{Group: "serving", Version: "v1alpha1", Kind: "InferenceGraph"}
+var inferencegraphsKind = schema.GroupVersionKind{Group: "serving.kserve.io", Version: "v1alpha1", Kind: "InferenceGraph"}
 
 // Get takes name of the inferenceGraph, and returns the corresponding inferenceGraph object, and an error if there is any.
 func (c *FakeInferenceGraphs) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.InferenceGraph, err error) {
