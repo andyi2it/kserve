@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import os
 import sys
 import uuid
@@ -25,7 +26,7 @@ import psutil
 from cloudevents.conversion import to_binary, to_structured
 from cloudevents.http import CloudEvent
 from grpc import ServicerContext
-from kserve.protocol.infer_type import InferOutput, InferRequest, InferResponse
+from kserve.protocol.infer_type import InferInput, InferOutput, InferRequest, InferResponse
 
 
 def is_running_in_k8s():
@@ -144,7 +145,7 @@ def get_predict_input(payload: Union[Dict, InferRequest]) -> Union[np.ndarray, p
     if isinstance(payload, Dict):
         instances = payload["inputs"] if "inputs" in payload else payload["instances"]
         if len(instances) == 0:
-            return [np.array(instances)]
+            return np.array(instances)
         if isinstance(instances[0], Dict):
             dfs = []
             for input in instances:
@@ -169,9 +170,8 @@ def get_predict_input(payload: Union[Dict, InferRequest]) -> Union[np.ndarray, p
                         else:
                             data[key] = [val]
             return pd.DataFrame(data)
-            return [inputs]
         else:
-            return [np.array(instances)]
+            return np.array(instances)
 
     elif isinstance(payload, InferRequest):
         content_type = ''
@@ -185,47 +185,46 @@ def get_predict_input(payload: Union[Dict, InferRequest]) -> Union[np.ndarray, p
                 content_type = parameters.get("content_type")
 
         if content_type == "pd":
-            return [payload.as_dataframe()]
+            return payload.as_dataframe()
         else:
-            infer_inputs = [input.as_numpy() for input in payload.inputs]
+            infer_inputs = merge_request_inputs(copy.deepcopy(payload.inputs))
             return infer_inputs
 
 
-def get_predict_response(payload: Union[Dict, InferRequest], results: List[Union[np.ndarray, pd.DataFrame]],
+def get_predict_response(payload: Union[Dict, InferRequest], result: Union[np.ndarray, pd.DataFrame],
                          model_name: str) -> Union[Dict, InferResponse]:
     if isinstance(payload, Dict):
-        # Taking the 0th element is sufficient as we have included the prediction results inside a list
-        # to ensure generic code compatibility in the model's predict method for both v1 and v2 formats
-        results = results[0]
-        infer_outputs = results
-        if isinstance(results, pd.DataFrame):
+        infer_outputs = result
+        if isinstance(result, pd.DataFrame):
             infer_outputs = []
-            for label, row in results.iterrows():
+            for label, row in result.iterrows():
                 infer_outputs.append(row.to_dict())
-        elif isinstance(results, np.ndarray):
-            infer_outputs = results.tolist()
+        elif isinstance(result, np.ndarray):
+            infer_outputs = result.tolist()
         return {"predictions": infer_outputs}
     elif isinstance(payload, InferRequest):
         infer_outputs = []
-
-        for result in results:
-            if isinstance(result, pd.DataFrame):
-                for col in result.columns:
-                    infer_output = InferOutput(
-                        name=col,
-                        shape=list(result[col].shape),
-                        datatype=from_np_dtype(result[col].dtype),
-                        data=result[col].tolist()
-                    )
-                    infer_outputs.append(infer_output)
-            else:
+        if isinstance(result, pd.DataFrame):
+            for col in result.columns:
                 infer_output = InferOutput(
-                    name="output-0",
-                    shape=list(result.shape),
-                    datatype=from_np_dtype(result.dtype),
-                    data=result.flatten().tolist()
+                    name=col,
+                    shape=list(result[col].shape),
+                    datatype=from_np_dtype(result[col].dtype),
+                    data=result[col].tolist()
                 )
                 infer_outputs.append(infer_output)
+        elif len(payload.inputs) > 1:
+            # for batch response
+            infer_outputs = merge_request_outputs(payload.inputs, result)
+        else:
+            infer_output = InferOutput(
+                name="output-0",
+                shape=list(result.shape),
+                datatype=from_np_dtype(result.dtype),
+                data=result.flatten().tolist()
+            )
+            infer_outputs.append(infer_output)
+
         return InferResponse(
             model_name=model_name,
             infer_outputs=infer_outputs,
@@ -250,3 +249,47 @@ def strtobool(val: str) -> bool:
         return False
     else:
         raise ValueError("invalid truth value %r" % (val,))
+
+
+def merge_request_inputs(inputs: List[InferInput]) -> np.ndarray:
+    batch_shape = inputs[0].shape.copy()
+    batch_data = inputs[0].data.copy()
+    batch_datatype = inputs[0].datatype
+
+    for input in inputs[1:]:
+        batch_shape[0] += input.shape[0]
+        batch_data += input.data
+
+    batch_input = InferInput(
+        name="input-0", data=batch_data, shape=batch_shape, datatype=batch_datatype)
+    return batch_input.as_numpy()
+
+
+def merge_request_outputs(inputs: List[InferInput], result: np.ndarray) -> List[InferOutput]:
+    infer_outputs = []
+    ele_index = 0
+    output_datatype = result.dtype
+    results = result.tolist()
+
+    # We generate predictions based on the number of inputs and create InferOutput objects
+    # to match the corresponding number of outputs.
+    for index, input in enumerate(inputs):
+        output_data = []
+        output_shape = list(result.shape) if len(result.shape) > 1 else [0]
+
+        # Storing output data based on the count of input data items
+        for ele in input.data:
+            if ele_index < len(results):
+                output_data.append(results[ele_index])
+                ele_index += 1
+
+        output_shape[0] = len(output_data)
+
+        infer_output = InferOutput(
+            name=f"output-{str(index)}",
+            shape=output_shape,
+            datatype=from_np_dtype(output_datatype),
+            data=output_data
+        )
+        infer_outputs.append(infer_output)
+    return infer_outputs
