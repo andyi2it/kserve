@@ -58,11 +58,8 @@ class LightGBMModel(Model):
 
     def predict(self, payload: Union[Dict, InferRequest], headers: Dict[str, str] = None) -> Union[Dict, InferResponse]:
         try:
-            predictions = []
             instances = get_predict_input(payload)
-            for instance in instances:
-                result = self._booster.predict(instance)
-                predictions.append(result)
-            return get_predict_response(payload, predictions, self.name)
+            result = self._booster.predict(instances)
+            return get_predict_response(payload, result, self.name)
         except Exception as e:
             raise InferenceError(str(e))
