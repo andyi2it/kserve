@@ -72,6 +72,7 @@ func TestCreateVirtualService(t *testing.T) {
 		name            string
 		isvc            *v1beta1.InferenceService
 		ingressConfig   *v1beta1.IngressConfig
+		deployConfig    *v1beta1.DeployConfig
 		domainList      *[]string
 		useDefault      bool
 		componentStatus *v1beta1.InferenceServiceStatus
@@ -88,6 +89,10 @@ func TestCreateVirtualService(t *testing.T) {
 			LocalGateway:            constants.KnativeLocalGateway,
 			LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
 		},
+		deployConfig: &v1beta1.DeployConfig{
+			DefaultDeploymentMode:           "Serverless",
+			ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
+		},
 		useDefault: false,
 		componentStatus: &v1beta1.InferenceServiceStatus{
 			Components: map[v1beta1.ComponentType]v1beta1.ComponentStatusSpec{
@@ -102,6 +107,10 @@ func TestCreateVirtualService(t *testing.T) {
 			IngressServiceName:      "someIngressServiceName",
 			LocalGateway:            constants.KnativeLocalGateway,
 			LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
+		},
+		deployConfig: &v1beta1.DeployConfig{
+			DefaultDeploymentMode:           "Serverless",
+			ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
 		},
 		useDefault: false,
 		componentStatus: &v1beta1.InferenceServiceStatus{
@@ -157,6 +166,10 @@ func TestCreateVirtualService(t *testing.T) {
 			IngressServiceName:      "someIngressServiceName",
 			LocalGateway:            constants.KnativeLocalGateway,
 			LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
+		},
+		deployConfig: &v1beta1.DeployConfig{
+			DefaultDeploymentMode:           "Serverless",
+			ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
 		},
 		useDefault: false,
 		componentStatus: &v1beta1.InferenceServiceStatus{
@@ -223,6 +236,10 @@ func TestCreateVirtualService(t *testing.T) {
 				LocalGateway:            constants.KnativeLocalGateway,
 				LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
 			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
+			},
 			useDefault: false,
 			componentStatus: &v1beta1.InferenceServiceStatus{
 				Components: map[v1beta1.ComponentType]v1beta1.ComponentStatusSpec{
@@ -249,6 +266,10 @@ func TestCreateVirtualService(t *testing.T) {
 				IngressServiceName:      "someIngressServiceName",
 				LocalGateway:            constants.KnativeLocalGateway,
 				LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
+			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
 			},
 			useDefault: false,
 			componentStatus: &v1beta1.InferenceServiceStatus{
@@ -322,6 +343,10 @@ func TestCreateVirtualService(t *testing.T) {
 				LocalGateway:            constants.KnativeLocalGateway,
 				LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
 			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
+			},
 			useDefault: false,
 			componentStatus: &v1beta1.InferenceServiceStatus{
 				Status: duckv1.Status{
@@ -394,6 +419,10 @@ func TestCreateVirtualService(t *testing.T) {
 				LocalGateway:            constants.KnativeLocalGateway,
 				LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
 			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
+			},
 			useDefault: false,
 			componentStatus: &v1beta1.InferenceServiceStatus{
 				Components: map[v1beta1.ComponentType]v1beta1.ComponentStatusSpec{
@@ -420,6 +449,10 @@ func TestCreateVirtualService(t *testing.T) {
 				IngressServiceName:      "someIngressServiceName",
 				LocalGateway:            constants.KnativeLocalGateway,
 				LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
+			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
 			},
 			useDefault: false,
 			componentStatus: &v1beta1.InferenceServiceStatus{
@@ -537,6 +570,10 @@ func TestCreateVirtualService(t *testing.T) {
 				IngressDomain:           "my-domain.com",
 				PathTemplate:            "/serving/{{ .Namespace }}/{{ .Name }}",
 				DisableIstioVirtualHost: false,
+			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
 			},
 			useDefault: false,
 			componentStatus: &v1beta1.InferenceServiceStatus{
@@ -657,6 +694,10 @@ func TestCreateVirtualService(t *testing.T) {
 				AdditionalIngressDomains: &[]string{additionalDomain, additionalSecondDomain},
 				PathTemplate:             "/serving/{{ .Namespace }}/{{ .Name }}",
 				DisableIstioVirtualHost:  false,
+			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
 			},
 			domainList: &[]string{"my-domain-1.com", "example.com"},
 			useDefault: false,
@@ -929,6 +970,10 @@ func TestCreateVirtualService(t *testing.T) {
 				LocalGateway:            constants.KnativeLocalGateway,
 				LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
 			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
+			},
 			useDefault: true,
 			componentStatus: &v1beta1.InferenceServiceStatus{
 				Status: duckv1.Status{
@@ -983,6 +1028,10 @@ func TestCreateVirtualService(t *testing.T) {
 				IngressServiceName:      "someIngressServiceName",
 				LocalGateway:            constants.KnativeLocalGateway,
 				LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
+			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
 			},
 			useDefault: true,
 			componentStatus: &v1beta1.InferenceServiceStatus{
@@ -1056,6 +1105,10 @@ func TestCreateVirtualService(t *testing.T) {
 				LocalGateway:            constants.KnativeLocalGateway,
 				LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
 			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
+			},
 			useDefault: true,
 			componentStatus: &v1beta1.InferenceServiceStatus{
 				Status: duckv1.Status{
@@ -1106,6 +1159,10 @@ func TestCreateVirtualService(t *testing.T) {
 				LocalGateway:            constants.KnativeLocalGateway,
 				LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
 			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
+			},
 			useDefault: false,
 			componentStatus: &v1beta1.InferenceServiceStatus{
 				Components: map[v1beta1.ComponentType]v1beta1.ComponentStatusSpec{
@@ -1132,6 +1189,10 @@ func TestCreateVirtualService(t *testing.T) {
 				IngressServiceName:      "someIngressServiceName",
 				LocalGateway:            constants.KnativeLocalGateway,
 				LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
+			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
 			},
 			useDefault: false,
 			componentStatus: &v1beta1.InferenceServiceStatus{
@@ -1195,6 +1256,10 @@ func TestCreateVirtualService(t *testing.T) {
 				IngressServiceName:      "someIngressServiceName",
 				LocalGateway:            constants.KnativeLocalGateway,
 				LocalGatewayServiceName: "knative-local-gateway.istio-system.svc.cluster.local",
+			},
+			deployConfig: &v1beta1.DeployConfig{
+				DefaultDeploymentMode:           "Serverless",
+				ServiceAnnotationDisallowedList: constants.ServiceAnnotationDisallowedList,
 			},
 			useDefault: false,
 			componentStatus: &v1beta1.InferenceServiceStatus{
@@ -1287,7 +1352,7 @@ func TestCreateVirtualService(t *testing.T) {
 				testIsvc.Spec.Explainer = &v1beta1.ExplainerSpec{}
 			}
 
-			actualService := createIngress(testIsvc, tc.useDefault, tc.ingressConfig, tc.domainList)
+			actualService := createIngress(testIsvc, tc.useDefault, tc.ingressConfig, tc.domainList, tc.deployConfig)
 			if diff := cmp.Diff(tc.expectedService.DeepCopy(), actualService.DeepCopy(), protocmp.Transform()); diff != "" {
 				t.Errorf("Test %q unexpected status (-want +got): %v", tc.name, diff)
 			}
