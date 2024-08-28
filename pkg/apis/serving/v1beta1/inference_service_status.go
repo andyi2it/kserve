@@ -49,6 +49,9 @@ type InferenceServiceStatus struct {
 	Components map[ComponentType]ComponentStatusSpec `json:"components,omitempty"`
 	// Model related statuses
 	ModelStatus ModelStatus `json:"modelStatus,omitempty"`
+
+	// Model related statuses
+	StorageInitializerStatus ModelStatus `json:"storageInitializerStatus,omitempty"`
 }
 
 // ComponentStatusSpec describes the state of the component
@@ -147,6 +150,40 @@ type ModelRevisionStates struct {
 	// +kubebuilder:default=""
 	TargetModelState ModelState `json:"targetModelState,omitempty"`
 }
+
+type StorageInitializerStatus struct {
+	// InitializationState represents the current initialization state of the Storage Intializer.
+	// +kubebuilder:default=Pending
+	InitializationState InitializationState `json:"initializationState"`
+
+	// FailureInfo represents information about the failure of the Storage Intializer.
+	// +optional
+	FailureInfo *FailureInfo `json:"failureInfo,omitempty"`
+
+	// Checksum represents the checksum of downloaded model file.
+	// +optional
+	Checksum string `json:"checksum,omitempty"`
+
+	// ResolvedResource represents the downloaded model file URI
+	// +optional
+	ResolvedResource string `json:"resolvedResource,omitempty"`
+}
+
+// InitializationState enum
+// +kubebuilder:validation:Enum="";Pending;InProgress;Completed;Failed
+type InitializationState string
+
+// InitializationState Enum values
+const (
+	// Target model has not yet been downloaded
+	ModelDownloadPending InitializationState = "Pending"
+	// Target model is currently being downloaded
+	ModelDownloadInProgress InitializationState = "InProgress"
+	// Target model has been successfully downloaded
+	ModelDownloadCompleted InitializationState = "Completed"
+	// Target model download failed
+	ModelDownloadFailed InitializationState = "Failed"
+)
 
 type ModelCopies struct {
 	// How many copies of this predictor's models failed to load recently
