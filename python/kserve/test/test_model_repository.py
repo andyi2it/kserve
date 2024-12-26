@@ -18,6 +18,7 @@ from kserve.protocol.rest.openai.types import (
     CompletionRequest,
     ErrorResponse,
     ChatCompletion,
+    EmbeddingRequest,
     Completion,
 )
 from kserve.protocol.rest.openai import OpenAIModel
@@ -40,6 +41,13 @@ class DummyOpenAIModel(OpenAIModel):
         request: CompletionRequest,
         raw_request: Optional[Request] = None,
     ) -> Union[AsyncGenerator[str, None], ChatCompletion, ErrorResponse]:
+        pass
+
+    async def create_embedding(
+        self,
+        request: EmbeddingRequest,
+        raw_request: Optional[Request] = None,
+    ) -> Union[AsyncGenerator[str, None], Completion, ErrorResponse]:
         pass
 
 
