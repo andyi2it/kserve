@@ -22,6 +22,7 @@ from kserve.protocol.rest.openai.types.openapi import (
     UsageInfo,
     ChatCompletionLogProbsContent,
 )
+from kserve.protocol.rest.openai.types.openapi import EmbeddingRequest  # noqa: F401
 
 from kserve.protocol.rest.openai.types.openapi import (
     DeltaMessage as ChoiceDelta,
