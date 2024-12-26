@@ -45,6 +45,7 @@ from kserve.protocol.rest.openai.types.openapi import CompletionRequest
 from kserve.protocol.rest.openai.types.openapi import (
     CompletionResponse as Completion,
 )
+from kserve.protocol.rest.openai.types.openapi import EmbeddingResponse as Embedding  # noqa: F401
 from kserve.protocol.rest.openai.types.openapi import (
     ChatCompletionLogProbs as ChatCompletionChoiceLogProbs,
 )
