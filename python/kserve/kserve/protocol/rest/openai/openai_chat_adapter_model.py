@@ -253,8 +253,8 @@ class OpenAIChatAdapterModel(OpenAIModel):
             return stream_results()
 
     async def create_embedding(
-        self, 
-        request: EmbeddingRequest, 
+        self,
+        request: EmbeddingRequest,
         raw_request: Optional[Request] = None,
     ) -> Union[AsyncGenerator[str, None], ChatCompletion, ErrorResponse]:
         return await super().create_embedding(request, raw_request)

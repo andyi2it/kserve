@@ -89,7 +89,7 @@ class OpenAIDataPlane(DataPlane):
         if not isinstance(model, OpenAIModel):
             raise RuntimeError(f"Model {model_name} does not support chat completion")
         return await model.create_chat_completion(request, raw_request)
-    
+
     async def create_embedding(
         self,
         model_name: str,

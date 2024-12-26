@@ -20,7 +20,6 @@ from kserve.protocol.rest.openai.types.openapi import (
     ChatCompletionMessageParam,
     ErrorResponse,
     UsageInfo,
-    EmbeddingRequest,
     ChatCompletionLogProbsContent,
 )
 
@@ -45,9 +44,6 @@ from kserve.protocol.rest.openai.types.openapi import (
 from kserve.protocol.rest.openai.types.openapi import CompletionRequest
 from kserve.protocol.rest.openai.types.openapi import (
     CompletionResponse as Completion,
-)
-from kserve.protocol.rest.openai.types.openapi import (
-    EmbeddingResponse as Embedding,
 )
 from kserve.protocol.rest.openai.types.openapi import (
     ChatCompletionLogProbs as ChatCompletionChoiceLogProbs,
