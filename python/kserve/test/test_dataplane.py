@@ -36,7 +36,12 @@ from typing import AsyncIterator, Union, Optional, AsyncGenerator
 from kserve.errors import InvalidInput, ModelNotFound
 from kserve.model import PredictorProtocol, PredictorConfig
 from kserve.protocol.dataplane import DataPlane
-from kserve.protocol.rest.openai.types import CompletionRequest, EmbeddingRequest, Embedding, ErrorResponse
+from kserve.protocol.rest.openai.types import (
+    CompletionRequest,
+    EmbeddingRequest,
+    Embedding,
+    ErrorResponse,
+)
 from kserve.protocol.rest.openai import OpenAIModel
 from kserve.model_repository import ModelRepository
 from kserve.ray import RayModel
