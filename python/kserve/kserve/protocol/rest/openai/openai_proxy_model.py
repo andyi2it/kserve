@@ -31,6 +31,7 @@ from .types import (
     ChatCompletion,
     ChatCompletionChunk,
     Completion,
+    EmbeddingRequest,
     ErrorResponse,
 )
 from .errors import OpenAIError, create_error_response
@@ -349,3 +350,10 @@ class OpenAIProxyModel(OpenAIModel):
         else:
             chat_completion = ChatCompletion.model_validate_json(response.content)
         return chat_completion
+
+    async def create_embedding(
+        self,
+        request: EmbeddingRequest,
+        raw_request: Optional[Request] = None,
+    ):
+        raise NotImplementedError
