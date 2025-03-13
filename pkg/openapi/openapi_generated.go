@@ -6295,6 +6295,13 @@ func schema_pkg_apis_serving_v1beta1_MetricSource(ref common.ReferenceCallback) 
 							Format:      "",
 						},
 					},
+					"operationOverTime": {
+						SchemaProps: spec.SchemaProps{
+							Description: "OperationOverTime specifies the operation to aggregate the metrics over time",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
 				},
 			},
 		},
