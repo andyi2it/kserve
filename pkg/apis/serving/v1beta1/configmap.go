@@ -42,6 +42,7 @@ const (
 	SecurityConfigName            = "security"
 	ServiceConfigName             = "service"
 	ResourceConfigName            = "resource"
+	OtelCollectorConfigName       = "opentelemetryCollector"
 )
 
 const (
@@ -69,6 +70,11 @@ type ExplainerConfig struct {
 // +kubebuilder:object:generate=false
 type ExplainersConfig struct {
 	ARTExplainer ExplainerConfig `json:"art,omitempty"`
+}
+
+type OtelCollectorConfig struct {
+	ScrapeInterval       string `json:"scrapeInterval,omitempty"`
+	OTelExporterEndpoint string `json:"otelExporterEndpoint,omitempty"`
 }
 
 // +kubebuilder:object:generate=false
@@ -145,6 +151,17 @@ func GetInferenceServiceConfigMap(ctx context.Context, clientset kubernetes.Inte
 	} else {
 		return configMap, nil
 	}
+}
+
+func NewOtelCollectorConfig(isvcConfigMap *corev1.ConfigMap) (*OtelCollectorConfig, error) {
+	otelConfig := &OtelCollectorConfig{}
+	if otel, ok := isvcConfigMap.Data[OtelCollectorConfigName]; ok {
+		err := json.Unmarshal([]byte(otel), otelConfig)
+		if err != nil {
+			return nil, fmt.Errorf("unable to parse otel config json: %w", err)
+		}
+	}
+	return otelConfig, nil
 }
 
 func NewInferenceServicesConfig(isvcConfigMap *corev1.ConfigMap) (*InferenceServicesConfig, error) {
