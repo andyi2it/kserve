@@ -516,6 +516,7 @@ const (
 	GatewayKind             = "Gateway"
 	ServiceKind             = "Service"
 	KedaScaledObjectKind    = "ScaledObject"
+	OpenTelemetryCollector  = "OpenTelemetryCollector"
 )
 
 // Model Parallel Options
