@@ -3,7 +3,10 @@
 from typing import Any
 
 from ..guardrails import (
-    PolicyError, check_namespace, scrub, scrub_logs_enabled,
+    PolicyError,
+    check_namespace,
+    scrub,
+    scrub_logs_enabled,
 )
 from ..k8s_client import core_api
 
@@ -13,7 +16,6 @@ _KNOWN_CONTAINERS = ["kserve-container", "storage-initializer", "queue-proxy"]
 
 
 def register(mcp: Any) -> None:
-
     @mcp.tool()
     def get_inference_service_logs(
         name: str,
@@ -70,10 +72,7 @@ def register(mcp: Any) -> None:
                 previous=previous,
             )
         except Exception as exc:
-            available = [
-                cs.name
-                for cs in (pod.status.container_statuses or [])
-            ]
+            available = [cs.name for cs in (pod.status.container_statuses or [])]
             return (
                 f"Failed to read logs from container '{container}' in pod '{pod_name}': {exc}\n"
                 f"Available containers: {available or _KNOWN_CONTAINERS}"

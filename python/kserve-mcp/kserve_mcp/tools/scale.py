@@ -8,7 +8,6 @@ from ..k8s_client import custom_objects_api, KSERVE_GROUP, KSERVE_VERSION, ISVC_
 
 
 def register(mcp: Any) -> None:
-
     @mcp.tool()
     def scale_inference_service(
         name: str,

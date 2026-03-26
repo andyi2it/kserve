@@ -8,22 +8,25 @@ from typing import Any
 _PATTERNS: list[tuple[str, str]] = [
     # Bearer tokens — must run before the generic key=value pattern so that
     # "Authorization: Bearer <token>" is fully replaced in one pass
-    (r'(?i)(Authorization\s*[=:]\s*)?Bearer\s+[A-Za-z0-9\-._~+/]+=*', r'Bearer <REDACTED>'),
+    (
+        r"(?i)(Authorization\s*[=:]\s*)?Bearer\s+[A-Za-z0-9\-._~+/]+=*",
+        r"Bearer <REDACTED>",
+    ),
     # key=value or key: value pairs with secret-sounding names
     (
-        r'(?i)(password|passwd|secret|token|api[_\-]?key|auth(?:orization)?'
-        r'|credential|private[_\-]?key|access[_\-]?key|client[_\-]?secret'
-        r')[^\S\r\n]*[=:][^\S\r\n]*\S+',
-        r'\1=<REDACTED>',
+        r"(?i)(password|passwd|secret|token|api[_\-]?key|auth(?:orization)?"
+        r"|credential|private[_\-]?key|access[_\-]?key|client[_\-]?secret"
+        r")[^\S\r\n]*[=:][^\S\r\n]*\S+",
+        r"\1=<REDACTED>",
     ),
     # JWT tokens (three base64url segments separated by dots)
-    (r'eyJ[A-Za-z0-9\-_]+\.eyJ[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+', r'<JWT_REDACTED>'),
+    (r"eyJ[A-Za-z0-9\-_]+\.eyJ[A-Za-z0-9\-_]+\.[A-Za-z0-9\-_]+", r"<JWT_REDACTED>"),
     # IPv4 addresses (scrub to avoid leaking cluster-internal IPs)
-    (r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b', r'<IP_REDACTED>'),
+    (r"\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b", r"<IP_REDACTED>"),
     # AWS-style access key IDs
-    (r'\b(AKIA|ASIA|AROA)[A-Z0-9]{16}\b', r'<AWS_KEY_REDACTED>'),
+    (r"\b(AKIA|ASIA|AROA)[A-Z0-9]{16}\b", r"<AWS_KEY_REDACTED>"),
     # Generic hex secrets ≥32 chars (API keys, hashes)
-    (r'\b[0-9a-fA-F]{32,}\b', r'<HEX_REDACTED>'),
+    (r"\b[0-9a-fA-F]{32,}\b", r"<HEX_REDACTED>"),
 ]
 
 _COMPILED = [(re.compile(p), r) for p, r in _PATTERNS]

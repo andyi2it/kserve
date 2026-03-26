@@ -12,7 +12,6 @@ from ..k8s_client import custom_objects_api, KSERVE_GROUP, KSERVE_VERSION, ISVC_
 
 
 def register(mcp: Any) -> None:
-
     @mcp.tool()
     def update_traffic_split(
         name: str,
@@ -52,7 +51,9 @@ def register(mcp: Any) -> None:
         if dry_run:
             return dry_run
 
-        patch = {"spec": {"predictor": {"canaryTrafficPercent": canary_traffic_percent}}}
+        patch = {
+            "spec": {"predictor": {"canaryTrafficPercent": canary_traffic_percent}}
+        }
         api = custom_objects_api()
         api.patch_namespaced_custom_object(
             group=KSERVE_GROUP,
@@ -65,7 +66,9 @@ def register(mcp: Any) -> None:
         if canary_traffic_percent == 100:
             msg = f"Canary promoted to stable: '{name}' now receives 100% of traffic."
         elif canary_traffic_percent == 0:
-            msg = f"Canary rolled back: '{name}' latest revision receives 0% of traffic."
+            msg = (
+                f"Canary rolled back: '{name}' latest revision receives 0% of traffic."
+            )
         else:
             msg = (
                 f"Traffic split updated for '{name}': "

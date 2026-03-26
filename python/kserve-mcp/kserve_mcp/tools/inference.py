@@ -6,7 +6,10 @@ from typing import Any
 import httpx
 
 from ..guardrails import (
-    PolicyError, check_namespace, scrub_dict, scrub_inference_enabled,
+    PolicyError,
+    check_namespace,
+    scrub_dict,
+    scrub_inference_enabled,
 )
 from ..k8s_client import core_api
 
@@ -26,7 +29,6 @@ def _service_exists(name: str, namespace: str) -> bool:
 
 
 def register(mcp: Any) -> None:
-
     @mcp.tool()
     def run_inference(
         name: str,

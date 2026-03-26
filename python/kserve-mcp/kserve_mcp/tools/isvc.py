@@ -4,11 +4,17 @@ import json
 from typing import Any
 
 from ..guardrails import (
-    PolicyError, check_namespace, check_write,
-    require_confirmation, scrub_k8s_object,
+    PolicyError,
+    check_namespace,
+    check_write,
+    require_confirmation,
+    scrub_k8s_object,
 )
 from ..k8s_client import (
-    custom_objects_api, KSERVE_GROUP, KSERVE_VERSION, ISVC_PLURAL,
+    custom_objects_api,
+    KSERVE_GROUP,
+    KSERVE_VERSION,
+    ISVC_PLURAL,
 )
 
 
@@ -39,7 +45,6 @@ def _summarise(isvc: dict) -> dict:
 
 
 def register(mcp: Any) -> None:
-
     @mcp.tool()
     def list_inference_services(namespace: str = "kserve") -> str:
         """List all InferenceServices in a namespace with their ready status and URL.
@@ -158,7 +163,9 @@ def register(mcp: Any) -> None:
             plural=ISVC_PLURAL,
             body=body,
         )
-        return f"InferenceService '{name}' created.\n" + json.dumps(_summarise(created), indent=2)
+        return f"InferenceService '{name}' created.\n" + json.dumps(
+            _summarise(created), indent=2
+        )
 
     @mcp.tool()
     def delete_inference_service(
