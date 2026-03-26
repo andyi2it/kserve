@@ -1,0 +1,20 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "sklearn-v2-iris"
+  annotations: 
+    serving.kserve.io/autoscalerClass: "keda"
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: sklearn
+      protocolVersion: v2
+      runtime: kserve-sklearnserver
+      storageUri: "gs://kfserving-examples/models/sklearn/1.0/model"
+    scaleMetric: "queueLength"
+    scaleTarger: 10
+
+
+# Queue Trigger
+# CPU
